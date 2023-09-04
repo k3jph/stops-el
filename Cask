@@ -5,7 +5,7 @@
 
 (package-file "guards.el")
 
-(files "*.el")
+(files "guards.el")
 
 (development
  (depends-on "ert"))
