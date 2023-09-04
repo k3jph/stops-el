@@ -2,10 +2,10 @@
 ;;
 ;; Copyright (C) 2023 James P. Howard, II
 ;;
-;; Author: James P. Howard, II <jh@jameshoward.us>
-;; Maintainer: James P. Howard, II <jh@jameshoward.us>
+;; Author: "James P. Howard, II" <jh@jameshoward.us>
+;; Maintainer: "James P. Howard, II" <jh@jameshoward.us>
 ;; Keywords: tools
-;; Homepage: https://github.com/k3jph/cmna-el
+;; Homepage: https://github.com/k3jph/guards-el
 ;; Package-Requires: ((emacs "24.3"))
 ;; Package-Version: 0.1.0
 ;;
