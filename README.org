@@ -1,0 +1,79 @@
+# README.org -*- mode: org -*- lexical-binding: t; -*-
+#+TITLE: Guards in Emacs Lisp
+#+AUTHOR: James P. Howard, II
+#+EMAIL: jh@jameshoward.us
+#+DATE: 4 September 2023
+#+LANGUAGE: en
+#+OPTIONS: toc:nil num:nil
+
+This package provides a set of macros for enforcing preconditions in your Emacs
+Lisp code.
+
+
+* Installation
+Clone this repository or download the 'guards.el' file and place it in your load
+path. Then, add the following line to your Emacs configuration:
+
+#+BEGIN_SRC emacs-lisp
+(require 'guards)
+#+END_SRC
+
+* Usage
+
+After installing the package, you can use the guard macros in your Emacs Lisp
+code to ensure various conditions are met.
+
+#+BEGIN_SRC emacs-lisp
+(defun divide (x y)
+  (guard! (/= y 0 "Cannot divide by zero"))
+  (/ x y))
+#+END_SRC
+
+** API Documentation
+
+*** guard-type!
+
+Ensure that a variable is of a specified type.
+
+#+BEGIN_SRC emacs-lisp
+(guard-type! x 'integerp)
+#+END_SRC
+
+*** guard-range!
+
+Ensure that a number falls within a certain range.
+
+#+BEGIN_SRC emacs-lisp
+(guard-range! x 0 100)
+#+END_SRC
+
+*** guard-list-size!
+
+Ensure that a list has a specific size.
+
+#+BEGIN_SRC emacs-lisp
+(guard-list-size! my-list 3)
+#+END_SRC
+
+*** guard-string-match!
+
+Validate that a string matches a given pattern.
+
+#+BEGIN_SRC emacs-lisp
+(guard-string-match! my-string "^[a-z]*$")
+#+END_SRC
+
+*** guard!
+
+Generic macro for custom validations.
+
+#+BEGIN_SRC emacs-lisp
+(guard! (= x y))
+#+END_SRC
+
+All macros also take an optional argument for specifying the type of signal to
+raise if the condition is not met.
+
+#+BEGIN_SRC emacs-lisp
+(guard! (= x y) 'my-custom-error)
+#+END_SRC

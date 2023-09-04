@@ -1,11 +1,11 @@
-;;; Cask -*- mode: elisp; -*- lexical-binding: t; -*-
+;;; Cask -*- mode: emacs-lisp; -*- lexical-binding: t; -*-
 
 (source gnu)
 (source melpa)
 
 (package-file "guards.el")
 
-(files "*.el")
+(files "guards.el")
 
 (development
  (depends-on "ert"))
