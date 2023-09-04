@@ -7,7 +7,7 @@
 ;; Keywords: tools
 ;; Homepage: https://github.com/k3jph/guards-el
 ;; Package-Requires: ((emacs "24.3"))
-;; Package-Version: 0.1.0
+;; Package-Version: 0.2.0
 ;;
 ;; This file is not part of GNU Emacs.
 ;;
