@@ -1,84 +1,79 @@
-#+TITLE: Guards Emacs Lisp Package
-#+AUTHOR: Dr. James Howard
-#+EMAIL: [your-email@example.com]
-#+DATE: [Insert current date]
+#+TITLE: Guards in Emacs Lisp
+#+AUTHOR: James P. Howard, II
+#+EMAIL: jh@jameshoward.us
+#+DATE: 4 September 2023
 #+LANGUAGE: en
 #+OPTIONS: toc:nil num:nil
-
-* Guards - A Guard Clause Library for Emacs Lisp
-  :PROPERTIES:
-  :CUSTOM_ID: top
-  :END:
 
 This package provides a set of macros for enforcing preconditions in your Emacs
 Lisp code.
 
 
-** Installation :CUSTOM_ID: installation
+* Installation :CUSTOM_ID: installation
 
 Clone this repository or download the 'guards.el' file and place it in your load
 path. Then, add the following line to your Emacs configuration:
 
 #+BEGIN_SRC emacs-lisp
-  (require 'guards)
+(require 'guards)
 #+END_SRC
 
-** Usage :CUSTOM_ID: usage
+* Usage :CUSTOM_ID: usage
 
 After installing the package, you can use the guard macros in your Emacs Lisp
 code to ensure various conditions are met.
 
 #+BEGIN_SRC emacs-lisp
-  (defun divide (x y)
-    (guard! (/= y 0 "Cannot divide by zero"))
-    (/ x y))
+(defun divide (x y)
+  (guard! (/= y 0 "Cannot divide by zero"))
+  (/ x y))
 #+END_SRC
 
-** API Documentation :CUSTOM_ID: api-documentation
+* API Documentation :CUSTOM_ID: api-documentation
 
-*** guard-type!
+** guard-type!
 
 Ensure that a variable is of a specified type.
 
 #+BEGIN_SRC emacs-lisp
-  (guard-type! x 'integerp)
+(guard-type! x 'integerp)
 #+END_SRC
 
-*** guard-range!
+** guard-range!
 
 Ensure that a number falls within a certain range.
 
 #+BEGIN_SRC emacs-lisp
-  (guard-range! x 0 100)
+(guard-range! x 0 100)
 #+END_SRC
 
-*** guard-list-size!
+** guard-list-size!
 
 Ensure that a list has a specific size.
 
 #+BEGIN_SRC emacs-lisp
-  (guard-list-size! my-list 3)
+(guard-list-size! my-list 3)
 #+END_SRC
 
-*** guard-string-match!
+** guard-string-match!
 
 Validate that a string matches a given pattern.
 
 #+BEGIN_SRC emacs-lisp
-  (guard-string-match! my-string "^[a-z]*$")
+(guard-string-match! my-string "^[a-z]*$")
 #+END_SRC
 
-*** guard!
+** guard!
 
 Generic macro for custom validations.
 
 #+BEGIN_SRC emacs-lisp
-  (guard! (= x y))
+(guard! (= x y))
 #+END_SRC
 
 All macros also take an optional argument for specifying the type of signal to
 raise if the condition is not met.
 
 #+BEGIN_SRC emacs-lisp
-  (guard! (= x y) 'my-custom-error)
+(guard! (= x y) 'my-custom-error)
 #+END_SRC
