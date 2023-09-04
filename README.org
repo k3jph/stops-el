@@ -1,3 +1,4 @@
+# README.org -*- mode: org -*- lexical-binding: t; -*-
 #+TITLE: Guards in Emacs Lisp
 #+AUTHOR: James P. Howard, II
 #+EMAIL: jh@jameshoward.us
@@ -9,8 +10,7 @@ This package provides a set of macros for enforcing preconditions in your Emacs
 Lisp code.
 
 
-* Installation :CUSTOM_ID: installation
-
+* Installation
 Clone this repository or download the 'guards.el' file and place it in your load
 path. Then, add the following line to your Emacs configuration:
 
@@ -18,7 +18,7 @@ path. Then, add the following line to your Emacs configuration:
 (require 'guards)
 #+END_SRC
 
-* Usage :CUSTOM_ID: usage
+* Usage
 
 After installing the package, you can use the guard macros in your Emacs Lisp
 code to ensure various conditions are met.
@@ -29,9 +29,9 @@ code to ensure various conditions are met.
   (/ x y))
 #+END_SRC
 
-* API Documentation :CUSTOM_ID: api-documentation
+** API Documentation
 
-** guard-type!
+*** guard-type!
 
 Ensure that a variable is of a specified type.
 
@@ -39,7 +39,7 @@ Ensure that a variable is of a specified type.
 (guard-type! x 'integerp)
 #+END_SRC
 
-** guard-range!
+*** guard-range!
 
 Ensure that a number falls within a certain range.
 
@@ -47,7 +47,7 @@ Ensure that a number falls within a certain range.
 (guard-range! x 0 100)
 #+END_SRC
 
-** guard-list-size!
+*** guard-list-size!
 
 Ensure that a list has a specific size.
 
@@ -55,7 +55,7 @@ Ensure that a list has a specific size.
 (guard-list-size! my-list 3)
 #+END_SRC
 
-** guard-string-match!
+*** guard-string-match!
 
 Validate that a string matches a given pattern.
 
@@ -63,7 +63,7 @@ Validate that a string matches a given pattern.
 (guard-string-match! my-string "^[a-z]*$")
 #+END_SRC
 
-** guard!
+*** guard!
 
 Generic macro for custom validations.
 
