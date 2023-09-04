@@ -5,59 +5,59 @@
 
 (define-error 'custom-error-type "Custom error for testing")
 
-;;; Test for guard-type!
-(ert-deftest test-guard-type-normal-operation ()
-  (should (guard-type! 42 integerp)))
+;;; Test for guards-type!
+(ert-deftest test-guards-type-normal-operation ()
+  (should (guards-type! 42 integerp)))
 
-(ert-deftest test-guard-type-failure ()
-  (should-error (guard-type! 42.0 integerp)))
+(ert-deftest test-guards-type-failure ()
+  (should-error (guards-type! 42.0 integerp)))
 
-(ert-deftest test-guard-type-custom-signal ()
-  (should-error (guard-type! 42.0 integerp 'custom-error-type)
+(ert-deftest test-guards-type-custom-signal ()
+  (should-error (guards-type! 42.0 integerp 'custom-error-type)
                 :type 'custom-error-type))
 
-;;; Test for guard-range!
-(ert-deftest test-guard-range-normal-operation ()
-  (should (guard-range! 42 0 100)))
+;;; Test for guards-range!
+(ert-deftest test-guards-range-normal-operation ()
+  (should (guards-range! 42 0 100)))
 
-(ert-deftest test-guard-range-failure ()
-  (should-error (guard-range! 200 0 100)))
+(ert-deftest test-guards-range-failure ()
+  (should-error (guards-range! 200 0 100)))
 
-(ert-deftest test-guard-range-custom-signal ()
-  (should-error (guard-range! 200 0 100 'custom-error-type)
+(ert-deftest test-guards-range-custom-signal ()
+  (should-error (guards-range! 200 0 100 'custom-error-type)
                 :type 'custom-error-type))
 
-;;; Test for guard-list-size!
-(ert-deftest test-guard-list-size-normal-operation ()
-  (should (guard-list-size! '(1 2 3) 3)))
+;;; Test for guards-list-size!
+(ert-deftest test-guards-list-size-normal-operation ()
+  (should (guards-list-size! '(1 2 3) 3)))
 
-(ert-deftest test-guard-list-size-failure ()
-  (should-error (guard-list-size! '(1 2) 3)))
+(ert-deftest test-guards-list-size-failure ()
+  (should-error (guards-list-size! '(1 2) 3)))
 
-(ert-deftest test-guard-list-size-custom-signal ()
-  (should-error (guard-list-size! '(1 2) 3 'custom-error-type)
+(ert-deftest test-guards-list-size-custom-signal ()
+  (should-error (guards-list-size! '(1 2) 3 'custom-error-type)
                 :type 'custom-error-type))
 
-;;; Test for guard-string-match!
-(ert-deftest test-guard-string-match-normal-operation ()
-  (should (guard-string-match! "hello" "^h")))
+;;; Test for guards-string-match!
+(ert-deftest test-guards-string-match-normal-operation ()
+  (should (guards-string-match! "hello" "^h")))
 
-(ert-deftest test-guard-string-match-failure ()
-  (should-error (guard-string-match! "hello" "^z")))
+(ert-deftest test-guards-string-match-failure ()
+  (should-error (guards-string-match! "hello" "^z")))
 
-(ert-deftest test-guard-string-match-custom-signal ()
-  (should-error (guard-string-match! "hello" "^z" 'custom-error-type)
+(ert-deftest test-guards-string-match-custom-signal ()
+  (should-error (guards-string-match! "hello" "^z" 'custom-error-type)
                 :type 'custom-error-type))
 
-;;; Test for guard!
-(ert-deftest test-guard-normal-operation ()
-  (should (guard! t)))
+;;; Test for guards!
+(ert-deftest test-guards-normal-operation ()
+  (should (guards! t)))
 
-(ert-deftest test-guard-failure ()
-  (should-error (guard! nil)))
+(ert-deftest test-guards-failure ()
+  (should-error (guards! nil)))
 
-(ert-deftest test-guard-custom-signal ()
-  (should-error (guard! nil 'custom-error-type)
+(ert-deftest test-guards-custom-signal ()
+  (should-error (guards! nil 'custom-error-type)
                 :type 'custom-error-type))
 
 ;;; guards-test.el ends here
