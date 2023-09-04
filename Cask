@@ -1,4 +1,4 @@
-;;; Cask -*- mode: elisp; -*- lexical-binding: t; -*-
+;;; Cask -*- mode: emacs-lisp; -*- lexical-binding: t; -*-
 
 (source gnu)
 (source melpa)
