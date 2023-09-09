@@ -2,7 +2,7 @@ export EMACS ?= $(shell which emacs)
 CASK_DIR := $(shell cask package-directory)
 BUILD_DIR := ./dist
 
-SRCS :=	guards.el
+SRCS :=	stops.el
 OBJS := $(SRCS:.el=.elc)
 
 default: all
@@ -28,7 +28,7 @@ $(OBJS): $(SRCS)
 	cask emacs --batch -L . --eval "(setq byte-compile-error-on-warn t)" -f batch-byte-compile $^
 
 test: all $(OBJS)
-	cask emacs --batch -L . -l guards-test.el -f ert-run-tests-batch-and-exit
+	cask emacs --batch -L . -l stops-test.el -f ert-run-tests-batch-and-exit
 
 release: all test
 	cask pkg-file

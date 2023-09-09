@@ -1,5 +1,5 @@
 # README.org -*- mode: org -*- lexical-binding: t; -*-
-#+TITLE: Guards in Emacs Lisp
+#+TITLE: Stops: Better Guards in Emacs Lisp
 #+AUTHOR: James P. Howard, II
 #+EMAIL: jh@jameshoward.us
 #+DATE: 4 September 2023
@@ -11,11 +11,11 @@ Lisp code.
 
 
 * Installation
-Clone this repository or download the 'guards.el' file and place it in your load
+Clone this repository or download the 'stops.el' file and place it in your load
 path. Then, add the following line to your Emacs configuration:
 
 #+BEGIN_SRC emacs-lisp
-(require 'guards)
+(require 'stops)
 #+END_SRC
 
 * Usage
@@ -25,55 +25,33 @@ code to ensure various conditions are met.
 
 #+BEGIN_SRC emacs-lisp
 (defun divide (x y)
-  (guard! (/= y 0 "Cannot divide by zero"))
+  (stops-if! (zerop y))
   (/ x y))
 #+END_SRC
 
 ** API Documentation
 
-*** guard-type!
+*** stops-if!
 
-Ensure that a variable is of a specified type.
-
-#+BEGIN_SRC emacs-lisp
-(guard-type! x 'integerp)
-#+END_SRC
-
-*** guard-range!
-
-Ensure that a number falls within a certain range.
+Stops if the condition given is true.
 
 #+BEGIN_SRC emacs-lisp
-(guard-range! x 0 100)
+(stops-if! (integerp x))
 #+END_SRC
 
-*** guard-list-size!
+*** stops-if-not!
 
-Ensure that a list has a specific size.
+Stops if the condition given is not true.
 
 #+BEGIN_SRC emacs-lisp
-(guard-list-size! my-list 3)
+(stops-if-not! (natnump x)
 #+END_SRC
 
-*** guard-string-match!
-
-Validate that a string matches a given pattern.
-
-#+BEGIN_SRC emacs-lisp
-(guard-string-match! my-string "^[a-z]*$")
-#+END_SRC
-
-*** guard!
-
-Generic macro for custom validations.
-
-#+BEGIN_SRC emacs-lisp
-(guard! (= x y))
-#+END_SRC
+*** Options
 
 All macros also take an optional argument for specifying the type of signal to
-raise if the condition is not met.
+raise if the condition is met.
 
 #+BEGIN_SRC emacs-lisp
-(guard! (= x y) 'my-custom-error)
+(stops-if! (equal  x y) 'my-custom-error)
 #+END_SRC
