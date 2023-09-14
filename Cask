@@ -3,9 +3,9 @@
 (source gnu)
 (source melpa)
 
-(package-file "guards.el")
+(package-file "stops.el")
 
-(files "guards.el")
+(files "stops.el")
 
 (development
  (depends-on "ert"))

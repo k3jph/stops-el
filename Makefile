@@ -2,9 +2,10 @@ export EMACS ?= $(shell which emacs)
 CASK_DIR := $(shell cask package-directory)
 BUILD_DIR := ./dist
 
-EL_FILES :=	guards.el
+SRCS :=	stops.el
+OBJS := $(SRCS:.el=.elc)
 
-default: compile
+default: all
 
 $(CASK_DIR): Cask
 	cask install
@@ -21,12 +22,14 @@ clean:
 	git clean -f
 	rm -rf $(BUILD_DIR)
 
-compile: cask
-	cask emacs --batch -L . --eval "(setq byte-compile-error-on-warn t)" -f batch-byte-compile $(EL_FILES); (ret=$$? ; exit $$ret)
+all: $(OBJS)
 
-test: compile
-	cask emacs --batch -L . -l guards-test.el -f ert-run-tests-batch-and-exit
+$(OBJS): $(SRCS)
+	cask emacs --batch -L . --eval "(setq byte-compile-error-on-warn t)" -f batch-byte-compile $^
 
-release: compile test
+test: all $(OBJS)
+	cask emacs --batch -L . -l stops-test.el -f ert-run-tests-batch-and-exit
+
+release: all test
 	cask pkg-file
 	cask package $(BUILD_DIR)
