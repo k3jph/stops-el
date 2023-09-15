@@ -22,9 +22,9 @@ cask: $(CASK_DIR)
 clean:
 	cask clean-elc
 	git clean -f
-	rm -rf $(BUILD_DIR)
+	rm -rf $(BUILD_DIR) $(CASK_DIR)
 
-all: $(OBJS)
+all: cask $(OBJS)
 
 $(OBJS): $(SRCS)
 	cask emacs --batch -L . --eval "(setq byte-compile-error-on-warn t)" -f batch-byte-compile $^
