@@ -1,3 +1,5 @@
+## Makefile -*- mode: makefile; -*-
+
 export EMACS ?= $(shell which emacs)
 CASK_DIR := $(shell cask package-directory)
 BUILD_DIR := ./dist
