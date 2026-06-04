@@ -1,4 +1,4 @@
-;;; Cask -*- mode: emacs-lisp; -*- lexical-binding: t; -*-
+;;; Cask -*- mode: emacs-lisp; lexical-binding: t; -*-
 
 (source gnu)
 (source melpa)
@@ -8,4 +8,4 @@
 (files "stops.el")
 
 (development
- (depends-on "ert"))
+ (depends-on "package-lint"))
