@@ -1,22 +1,30 @@
-# README.org -*- mode: org -*- lexical-binding: t; -*-
+# README.org -*- mode: org; lexical-binding: t; -*-
 #+TITLE: Stops: Better Guards in Emacs Lisp
 #+AUTHOR: James P. Howard, II
 #+EMAIL: jh@jameshoward.us
-#+DATE: 4 September 2023
 #+LANGUAGE: en
 #+OPTIONS: toc:nil num:nil
+
+[[https://github.com/k3jph/stops-el][file:https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white]]
+[[https://jameshoward.us][file:https://img.shields.io/badge/homepage-jameshoward.us-0b2f5b.svg?style=for-the-badge&labelColor=f3dd78]]
 
 [[https://xkcd.com/859][file:https://img.shields.io/badge/%28-%20%20%20-red.svg]]
 [[https://github.com/k3jph/stops-el/actions/workflows/build-main.yml][file:https://github.com/k3jph/stops-el/actions/workflows/build-main.yml/badge.svg?branch=main]]
 [[https://github.com/k3jph/stops-el/actions/workflows/build-develop.yml][file:https://github.com/k3jph/stops-el/actions/workflows/build-develop.yml/badge.svg?branch=develop]]
-[[https://jameshoward.us][file:https://jameshoward.us/assets/img/identity/jameshoward-badge.svg]]
 
-This package provides a set of macros for enforcing preconditions in your Emacs
-Lisp code.
+Stops provides two small guard macros for Emacs Lisp:
+
+- ~stops-if!~ signals an error when a condition is non-nil.
+- ~stops-if-not!~ signals an error when a condition is nil.
+
+Both macros return ~t~ when the guard passes. Both accept ~:error-type~ and
+~:error-message~ keyword arguments. The error message may be a literal string
+or any Emacs Lisp expression that evaluates to a string.
 
 * Installation
-Clone this repository or download the 'stops.el' file and place it in your load
-path. Then, add the following line to your Emacs configuration:
+
+Clone this repository or download ~stops.el~ and place it in your Emacs
+~load-path~. Then add the following line to your Emacs configuration:
 
 #+BEGIN_SRC emacs-lisp
 (require 'stops)
@@ -24,38 +32,120 @@ path. Then, add the following line to your Emacs configuration:
 
 * Usage
 
-After installing the package, you can use the guard macros in your Emacs Lisp
-code to ensure various conditions are met.
+Use ~stops-if!~ when a true condition should stop execution.
 
 #+BEGIN_SRC emacs-lisp
 (defun divide (x y)
-  (stops-if! (zerop y))
+  (stops-if! (zerop y)
+    :error-message (format "Cannot divide %S by zero" x))
   (/ x y))
 #+END_SRC
 
-** API Documentation
-
-*** stops-if!
-
-Stops if the condition given is true.
+Use ~stops-if-not!~ when a false condition should stop execution.
 
 #+BEGIN_SRC emacs-lisp
-(stops-if! (integerp x))
+(defun first-item (xs)
+  (stops-if-not! (consp xs)
+    :error-message (format "Expected a non-empty list, got %S" xs))
+  (car xs))
 #+END_SRC
 
-*** stops-if-not!
+When no error message is provided, Stops creates a message from the guard
+condition.
 
-Stops if the condition given is not true.
+#+BEGIN_SRC emacs-lisp
+(stops-if-not! (integerp x))
+#+END_SRC
+
+Signals an error with a message like:
+
+#+BEGIN_EXAMPLE
+stops-if-not!: condition was nil: (integerp x)
+#+END_EXAMPLE
+
+* Formatted Messages
+
+~:error-message~ may be a literal string or any Emacs Lisp expression that
+evaluates to a string. Use ~format~ when the message should include runtime
+values.
 
 #+BEGIN_SRC emacs-lisp
 (stops-if-not! (natnump x)
+  :error-message (format "Expected a natural number, got %S" x))
 #+END_SRC
 
-*** Options
+The message expression is evaluated only when the guard fails.
 
-All macros also take an optional argument for specifying the type of signal to
-raise if the condition is met.
+* API
+
+** ~stops-if!~
 
 #+BEGIN_SRC emacs-lisp
-(stops-if! (equal  x y) 'my-custom-error)
+(stops-if! CONDITION &key ERROR-TYPE ERROR-MESSAGE)
 #+END_SRC
+
+Signal an error if ~CONDITION~ is non-nil. Return ~t~ otherwise.
+
+~ERROR-TYPE~ defaults to ~error~. ~ERROR-MESSAGE~, when non-nil, is used as the
+error message. It may be a literal string or an expression that evaluates to a
+string.
+
+#+BEGIN_SRC emacs-lisp
+(stops-if! (member user blocked-users)
+  :error-type 'user-error
+  :error-message (format "User %S is blocked" user))
+#+END_SRC
+
+** ~stops-if-not!~
+
+#+BEGIN_SRC emacs-lisp
+(stops-if-not! CONDITION &key ERROR-TYPE ERROR-MESSAGE)
+#+END_SRC
+
+Signal an error if ~CONDITION~ is nil. Return ~t~ otherwise.
+
+~ERROR-TYPE~ defaults to ~error~. ~ERROR-MESSAGE~, when non-nil, is used as the
+error message. It may be a literal string or an expression that evaluates to a
+string.
+
+#+BEGIN_SRC emacs-lisp
+(stops-if-not! (natnump x)
+  :error-type 'wrong-type-argument
+  :error-message (format "Expected a natural number, got %S" x))
+#+END_SRC
+
+* Documentation Site
+
+Build the static documentation site with:
+
+#+BEGIN_SRC sh
+make docs
+#+END_SRC
+
+The generated site is written to ~public/~ and copied to ~docs/index.html~ for
+local review. The ~build-main~ GitHub Actions workflow builds this site and
+uploads it as a GitHub Pages artifact named ~github-pages~. To publish it,
+configure GitHub Pages for this repository to use GitHub Actions as the
+publishing source.
+
+* Development
+
+Run the test suite with:
+
+#+BEGIN_SRC sh
+make test
+#+END_SRC
+
+Run byte-compilation, tests, and package linting with:
+
+#+BEGIN_SRC sh
+make check
+#+END_SRC
+
+* License
+
+Stops is released under the MIT License. See ~LICENSE~ for details.
+
+* Version
+
+This is the 1.0.0-rc11 release candidate for Stops.

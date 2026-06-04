@@ -1,37 +1,71 @@
 ## Makefile -*- mode: makefile; -*-
 
-export EMACS ?= $(shell which emacs)
-CASK_DIR := $(shell cask package-directory)
-BUILD_DIR := ./dist
+EMACS ?= emacs
+CASK ?= cask
+BUILD_DIR := dist
+DOCS_BUILD_DIR := public
+PACKAGE := stops
+VERSION := 1.0.0
+RC_TAG := rc11
+ARCHIVE := $(BUILD_DIR)/$(PACKAGE)-$(VERSION)-$(RC_TAG).tar.gz
 
-SRCS :=	stops.el
-OBJS := $(SRCS:.el=.elc)
+.PHONY: all check clean clean-docs compile cask docs lint package test
 
-default: all
+all: check
 
-$(CASK_DIR): Cask
-	cask install
-	@touch $(CASK_DIR)
+compile:
+	$(EMACS) --batch -Q -L . \
+	  --eval "(setq byte-compile-error-on-warn t)" \
+	  -f batch-byte-compile stops.el
 
-.PHONY: cask clean compile test release
+test: compile
+	$(EMACS) --batch -Q -L . \
+	  -l stops-test.el \
+	  -f ert-run-tests-batch-and-exit
 
-default: compile
+lint:
+	$(EMACS) --batch -Q \
+	  --eval "(require 'package)" \
+	  --eval "(add-to-list 'package-archives '(\"melpa\" . \"https://melpa.org/packages/\") t)" \
+	  --eval "(package-initialize)" \
+	  --eval "(unless (package-installed-p 'package-lint) \
+	             (package-refresh-contents) \
+	             (package-install 'package-lint))" \
+	  -f package-lint-batch-and-exit stops.el
 
-cask: $(CASK_DIR)
+check: compile test lint
 
-clean:
-	cask clean-elc
-	git clean -f
-	rm -rf $(BUILD_DIR) $(CASK_DIR)
+docs: clean-docs
+	mkdir -p $(DOCS_BUILD_DIR)
+	$(EMACS) --batch -Q -L . \
+	  --script docs/build-docs.el
+	cp docs/stops.css $(DOCS_BUILD_DIR)/stops.css
+	if [ -f docs/stops-el-badge.svg ]; then cp docs/stops-el-badge.svg $(DOCS_BUILD_DIR)/stops-el-badge.svg; fi
+	cp $(DOCS_BUILD_DIR)/index.html docs/index.html
+	touch $(DOCS_BUILD_DIR)/.nojekyll
 
-all: cask $(OBJS)
+clean-docs:
+	rm -rf $(DOCS_BUILD_DIR)
+	rm -f docs/index.html
 
-$(OBJS): $(SRCS)
-	cask emacs --batch -L . --eval "(setq byte-compile-error-on-warn t)" -f batch-byte-compile $^
+cask:
+	$(CASK) install
+	$(CASK) exec $(EMACS) --batch -L . \
+	  --eval "(setq byte-compile-error-on-warn t)" \
+	  -f batch-byte-compile stops.el
+	$(CASK) exec $(EMACS) --batch -L . \
+	  -l stops-test.el \
+	  -f ert-run-tests-batch-and-exit
 
-test: all $(OBJS)
-	cask emacs --batch -L . -l stops-test.el -f ert-run-tests-batch-and-exit
+package: clean docs
+	mkdir -p $(BUILD_DIR)/$(PACKAGE)-$(VERSION)
+	cp stops.el stops-test.el README.org Makefile Cask CHANGELOG.org LICENSE $(BUILD_DIR)/$(PACKAGE)-$(VERSION)/
+	mkdir -p $(BUILD_DIR)/$(PACKAGE)-$(VERSION)/docs
+	cp docs/index.org docs/build-docs.el docs/stops.css $(BUILD_DIR)/$(PACKAGE)-$(VERSION)/docs/
+	if [ -f docs/index.html ]; then cp docs/index.html $(BUILD_DIR)/$(PACKAGE)-$(VERSION)/docs/index.html; fi
+	if [ -f docs/stops-el-badge.svg ]; then cp docs/stops-el-badge.svg $(BUILD_DIR)/$(PACKAGE)-$(VERSION)/docs/stops-el-badge.svg; fi
+	tar -C $(BUILD_DIR) -czf $(ARCHIVE) $(PACKAGE)-$(VERSION)
 
-release: all test
-	cask pkg-file
-	cask package $(BUILD_DIR)
+clean: clean-docs
+	rm -f *.elc
+	rm -rf $(BUILD_DIR)

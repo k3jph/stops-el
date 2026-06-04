@@ -1,0 +1,187 @@
+:root {
+  --bg: #fffdfb;
+  --fg: #1f1f1f;
+  --muted: #626262;
+  --border: #ded8d2;
+  --accent: #0b2f5b;
+  --accent-gold: #f3dd78;
+  --accent-soft: #fff8d9;
+  --code-bg: #f7f4f1;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 17px;
+  line-height: 1.62;
+}
+
+#content {
+  max-width: 920px;
+  margin: 0 auto;
+  padding: 3rem 1.25rem 5rem;
+}
+
+#org-div-home-and-up,
+#postamble,
+.title,
+.subtitle {
+  display: none;
+}
+
+.page-header {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: start;
+  gap: 2rem;
+  margin: 0 0 1rem;
+}
+
+.page-header-text {
+  min-width: 0;
+}
+
+.site-title {
+  margin: 0;
+  color: var(--accent);
+  font-size: clamp(2.6rem, 6vw, 4.8rem);
+  line-height: 0.95;
+  letter-spacing: -0.06em;
+}
+
+.site-subtitle {
+  margin: 0.7rem 0 0;
+  color: var(--muted);
+  font-size: 1.25rem;
+  line-height: 1.35;
+}
+
+.page-header-logo {
+  justify-self: end;
+  align-self: start;
+  padding-top: 0.1rem;
+}
+
+.page-header-logo img {
+  display: block;
+  width: clamp(112px, 15vw, 164px);
+  height: auto;
+}
+
+.project-badges {
+  margin: 1rem 0 2rem;
+}
+
+.badges {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.badges-large {
+  margin: 0 0 0.6rem;
+}
+
+.badges-small {
+  margin: 0;
+}
+
+@media (max-width: 640px) {
+  #content {
+    padding-top: 2rem;
+  }
+
+  .page-header {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .page-header-logo {
+    justify-self: start;
+  }
+
+  .page-header-logo img {
+    width: 104px;
+  }
+}
+
+h1,
+h2,
+h3 {
+  line-height: 1.2;
+}
+
+h2 {
+  margin-top: 2.5rem;
+  padding-bottom: 0.25rem;
+  border-bottom: 1px solid var(--accent-gold);
+}
+
+h3 {
+  margin-top: 2rem;
+}
+
+a {
+  color: var(--accent);
+}
+
+pre,
+code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+code {
+  padding: 0.1rem 0.25rem;
+  border-radius: 0.25rem;
+  background: var(--code-bg);
+}
+
+pre.src,
+pre.example {
+  overflow-x: auto;
+  padding: 1rem;
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  background: var(--code-bg);
+}
+
+pre.src:before {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: var(--muted);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+pre.src-emacs-lisp:before {
+  content: "Emacs Lisp";
+}
+
+pre.src-sh:before {
+  content: "Shell";
+}
+
+#table-of-contents {
+  margin: 2rem 0;
+  padding: 1rem 1.25rem;
+  border: 1px solid var(--accent-gold);
+  border-radius: 0.5rem;
+  background: var(--accent-soft);
+}
+
+#table-of-contents h2 {
+  margin-top: 0;
+  border-bottom: 0;
+}
+
+#table-of-contents ul {
+  margin-bottom: 0;
+}

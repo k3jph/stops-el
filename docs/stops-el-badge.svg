@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-labelledby="title desc">
+  <title id="title">stops-el badge</title>
+  <desc id="desc">A white lambda on a dark red octagon.</desc>
+  <polygon points="37.49,2 90.51,2 126,37.49 126,90.51 90.51,126 37.49,126 2,90.51 2,37.49" fill="#8f1717" stroke="#ffffff" stroke-width="4"/>
+  <text x="64" y="91" text-anchor="middle" font-family="Noto Serif Display, Noto Serif, Georgia, serif" font-size="88" font-style="italic" fill="#ffffff">λ</text>
+</svg>

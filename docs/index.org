@@ -1,0 +1,245 @@
+#+TITLE: Stops
+#+SUBTITLE: Better Guards in Emacs Lisp
+#+AUTHOR: James P. Howard, II
+#+EMAIL: jh@jameshoward.us
+#+LANGUAGE: en
+#+OPTIONS: toc:nil num:nil title:nil html-postamble:nil html-style:nil html-home/up-links:nil
+#+HTML_HEAD: <link rel="stylesheet" href="stops.css" />
+
+#+BEGIN_EXPORT html
+<header class="page-header">
+  <div class="page-header-text">
+    <h1 class="site-title">Stops</h1>
+    <p class="site-subtitle">Better Guards in Emacs Lisp</p>
+  </div>
+  <div class="page-header-logo">
+    <img src="stops-el-badge.svg" alt="stops-el badge: a white lambda on a red octagon" />
+  </div>
+</header>
+
+<div class="project-badges" aria-label="Project links and status badges">
+  <p class="badges badges-large">
+    <a href="https://github.com/k3jph/stops-el"><img alt="GitHub" src="https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&amp;logo=github&amp;logoColor=white" /></a>
+    <a href="https://jameshoward.us"><img alt="James Howard" src="https://img.shields.io/badge/homepage-jameshoward.us-0b2f5b.svg?style=for-the-badge&amp;labelColor=f3dd78" /></a>
+  </p>
+  <p class="badges badges-small">
+    <a href="https://github.com/k3jph/stops-el/actions/workflows/build-main.yml"><img alt="main build" src="https://github.com/k3jph/stops-el/actions/workflows/build-main.yml/badge.svg?branch=main" /></a>
+    <a href="https://github.com/k3jph/stops-el/actions/workflows/build-develop.yml"><img alt="develop build" src="https://github.com/k3jph/stops-el/actions/workflows/build-develop.yml/badge.svg?branch=develop" /></a>
+    <a href="https://github.com/k3jph/stops-el/blob/main/LICENSE"><img alt="MIT License" src="https://img.shields.io/badge/license-MIT-blue.svg" /></a>
+  </p>
+</div>
+
+<nav id="table-of-contents" aria-label="Table of contents">
+  <h2>Table of Contents</h2>
+  <ul>
+    <li><a href="#installation">Installation</a></li>
+    <li><a href="#quick-start">Quick Start</a></li>
+    <li><a href="#formatted-messages">Formatted Messages</a></li>
+    <li><a href="#reference">Reference</a>
+      <ul>
+        <li><a href="#stops-if"><code>stops-if!</code></a></li>
+        <li><a href="#stops-if-not"><code>stops-if-not!</code></a></li>
+      </ul>
+    </li>
+    <li><a href="#development">Development</a></li>
+    <li><a href="#license">License</a></li>
+  </ul>
+</nav>
+#+END_EXPORT
+
+Stops provides two small guard macros for Emacs Lisp:
+
+- ~stops-if!~ signals an error when a condition is non-nil.
+- ~stops-if-not!~ signals an error when a condition is nil.
+
+Both macros return ~t~ when the guard passes. Both accept ~:error-type~ and
+~:error-message~ keyword arguments. The error message may be a literal string
+or any Emacs Lisp expression that evaluates to a string.
+
+* Installation
+:PROPERTIES:
+:CUSTOM_ID: installation
+:END:
+
+Clone the repository or download ~stops.el~ and place it in your Emacs
+~load-path~. Then add this to your Emacs configuration:
+
+#+BEGIN_SRC emacs-lisp
+(require 'stops)
+#+END_SRC
+
+* Quick Start
+:PROPERTIES:
+:CUSTOM_ID: quick-start
+:END:
+
+Use ~stops-if!~ when a true condition should stop execution.
+
+#+BEGIN_SRC emacs-lisp
+(defun divide (x y)
+  (stops-if! (zerop y)
+    :error-message (format "Cannot divide %S by zero" x))
+  (/ x y))
+#+END_SRC
+
+Use ~stops-if-not!~ when a false condition should stop execution.
+
+#+BEGIN_SRC emacs-lisp
+(defun first-item (xs)
+  (stops-if-not! (consp xs)
+    :error-message (format "Expected a non-empty list, got %S" xs))
+  (car xs))
+#+END_SRC
+
+When no error message is provided, Stops creates a message from the guard
+condition.
+
+#+BEGIN_SRC emacs-lisp
+(stops-if-not! (integerp x))
+#+END_SRC
+
+This signals an error with a message like:
+
+#+BEGIN_EXAMPLE
+stops-if-not!: condition was nil: (integerp x)
+#+END_EXAMPLE
+
+* Formatted Messages
+:PROPERTIES:
+:CUSTOM_ID: formatted-messages
+:END:
+
+Stops does not need a separate formatting keyword. Because ~:error-message~ is
+ordinary Emacs Lisp, pass a call to ~format~ when the message should include
+runtime values.
+
+#+BEGIN_SRC emacs-lisp
+(defun require-user-id (user-id)
+  (stops-if-not! (natnump user-id)
+    :error-type 'wrong-type-argument
+    :error-message (format "Expected a natural-number user id, got %S" user-id))
+  user-id)
+#+END_SRC
+
+The message expression is evaluated only when the guard fails. In this example,
+~format~ is not called when ~user-id~ is a natural number.
+
+#+BEGIN_SRC emacs-lisp
+(defun lookup-user (user-id users)
+  (stops-if-not! (hash-table-p users)
+    :error-message (format "Expected a hash table, got %S" users))
+  (stops-if-not! (gethash user-id users)
+    :error-message (format "No user found for id %S" user-id))
+  (gethash user-id users))
+#+END_SRC
+
+Literal strings still work when no formatting is needed.
+
+#+BEGIN_SRC emacs-lisp
+(stops-if! (zerop y)
+  :error-message "Division by zero")
+#+END_SRC
+
+* Reference
+:PROPERTIES:
+:CUSTOM_ID: reference
+:END:
+
+** ~stops-if!~
+:PROPERTIES:
+:CUSTOM_ID: stops-if
+:END:
+
+#+BEGIN_SRC emacs-lisp
+(stops-if! CONDITION &key ERROR-TYPE ERROR-MESSAGE)
+#+END_SRC
+
+Signal an error if ~CONDITION~ is non-nil. Return ~t~ otherwise.
+
+~ERROR-TYPE~ defaults to ~error~. ~ERROR-MESSAGE~, when non-nil, is used as the
+error message. It may be a literal string or an expression that evaluates to a
+string.
+
+#+BEGIN_SRC emacs-lisp
+(stops-if! (member user blocked-users)
+  :error-type 'user-error
+  :error-message (format "User %S is blocked" user))
+#+END_SRC
+
+If ~ERROR-MESSAGE~ is omitted, Stops generates a message from ~CONDITION~.
+
+#+BEGIN_SRC emacs-lisp
+(stops-if! (member user blocked-users))
+#+END_SRC
+
+This signals an error with a message like:
+
+#+BEGIN_EXAMPLE
+stops-if!: condition was non-nil: (member user blocked-users)
+#+END_EXAMPLE
+
+** ~stops-if-not!~
+:PROPERTIES:
+:CUSTOM_ID: stops-if-not
+:END:
+
+#+BEGIN_SRC emacs-lisp
+(stops-if-not! CONDITION &key ERROR-TYPE ERROR-MESSAGE)
+#+END_SRC
+
+Signal an error if ~CONDITION~ is nil. Return ~t~ otherwise.
+
+~ERROR-TYPE~ defaults to ~error~. ~ERROR-MESSAGE~, when non-nil, is used as the
+error message. It may be a literal string or an expression that evaluates to a
+string.
+
+#+BEGIN_SRC emacs-lisp
+(stops-if-not! (natnump x)
+  :error-type 'wrong-type-argument
+  :error-message (format "Expected a natural number, got %S" x))
+#+END_SRC
+
+If ~ERROR-MESSAGE~ is omitted, Stops generates a message from ~CONDITION~.
+
+#+BEGIN_SRC emacs-lisp
+(stops-if-not! (natnump x))
+#+END_SRC
+
+This signals an error with a message like:
+
+#+BEGIN_EXAMPLE
+stops-if-not!: condition was nil: (natnump x)
+#+END_EXAMPLE
+
+* Development
+:PROPERTIES:
+:CUSTOM_ID: development
+:END:
+
+Run the test suite with:
+
+#+BEGIN_SRC sh
+make test
+#+END_SRC
+
+Run byte-compilation, tests, and package linting with:
+
+#+BEGIN_SRC sh
+make check
+#+END_SRC
+
+Build this documentation site with:
+
+#+BEGIN_SRC sh
+make docs
+#+END_SRC
+
+The generated site is written to ~public/~. The ~build-main~ workflow uploads
+that directory as a GitHub Pages artifact.
+
+* License
+:PROPERTIES:
+:CUSTOM_ID: license
+:END:
+
+Stops is released under the MIT License.
