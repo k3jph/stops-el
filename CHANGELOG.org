@@ -1,78 +1,39 @@
 #+TITLE: Changelog
 #+OPTIONS: toc:nil num:nil
 
-* 1.0.0-rc11
+* 1.0.0
 
 - Move the documentation logo into the page header.
 - Document formatted messages using ordinary ~format~ expressions passed to
   ~:error-message~.
 - Add explicit ERT coverage for formatted messages.
 - Keep the README and documentation site aligned for the release candidate.
-
-* 1.0.0-rc10
-
 - Ensure ~make docs~ leaves a generated ~docs/index.html~ as well as the
   GitHub Pages-ready ~public/index.html~.
 - Add ~docs/stops-el-badge.svg~ and display it prominently on the documentation
   landing page.
-- Copy the badge SVG into the ~public/~ documentation artifact when present.
 - Hide Org's home/up navigation both through export options and CSS.
-
-* 1.0.0-rc9
-
-- Update the James Howard homepage badge to use the current blue and gold site colors.
 - Update the documentation site accent colors to use blue with gold accents.
 - Use six-digit hex values in Shields.io badge URLs, omitting the alpha channel from the supplied color values.
-
-
-* 1.0.0-rc8
-
 - Removed the Org-generated UP/HOME navigation links from the documentation site.
 - Added a GitHub repository badge to the documentation site and README.
 - Added a James Howard homepage badge to the documentation site and README.
-
-
-* 1.0.0-rc7
-
 - Disable Org HTML source-block fontification in the documentation build.
 - Avoid repeated htmlize warnings during `make docs` when building under
   `emacs -Q` without external packages installed.
-
-* 1.0.0-rc6
-
-- Fix two ERT assertions for custom error types with custom messages.
-- Compare the signaled condition data directly instead of comparing
-  ~error-message-string~, since Emacs prefixes rendered messages for
-  custom error symbols declared with ~define-error~.
-
-* 1.0.0-rc5
-
 - Add an Org-based documentation site under ~docs/~.
 - Add a ~make docs~ target that exports the site to ~public/~.
 - Update the ~build-main~ workflow to build the documentation site, upload a
   normal documentation artifact, and upload a GitHub Pages artifact.
 - Document the GitHub Pages artifact workflow in the README.
-
-* 1.0.0-rc4
-
 - Replace the single ~check.yml~ workflow with branch-specific ~build-main.yml~ and
   ~build-develop.yml~ workflows.
 - Add separate README badges for the ~main~ and ~develop~ branch workflows.
-
-* 1.0.0-rc3
-
 - Confirmed repository metadata points to ~k3jph/stops-el~.
 - Updated README workflow badge to match the included ~check.yml~ GitHub Actions workflow.
-
-* 1.0.0-rc2
-
-- Add MIT License file.
 - Add SPDX license identifier to ~stops.el~.
 - Document MIT licensing in the README.
 - Include licensing and changelog files in the package archive target.
-
-* 1.0.0-rc1
-
 - Add explicit dependency on ~cl-lib~.
 - Replace runtime ~eval~ use in guard macros.
 - Use conventional ~signal~ error data lists.

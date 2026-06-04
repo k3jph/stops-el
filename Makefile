@@ -6,8 +6,8 @@ BUILD_DIR := dist
 DOCS_BUILD_DIR := public
 PACKAGE := stops
 VERSION := 1.0.0
-RC_TAG := rc11
-ARCHIVE := $(BUILD_DIR)/$(PACKAGE)-$(VERSION)-$(RC_TAG).tar.gz
+RC_TAG :=
+ARCHIVE := $(BUILD_DIR)/$(PACKAGE)-$(VERSION)$(RC_TAG).tar.gz
 
 .PHONY: all check clean clean-docs compile cask docs lint package test
 
