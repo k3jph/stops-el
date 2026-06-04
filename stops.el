@@ -5,7 +5,7 @@
 
 ;; Author: James P. Howard, II <jh@jameshoward.us>
 ;; Maintainer: James P. Howard, II <jh@jameshoward.us>
-;; Version: 1.0.0
+;; Version: 1.0.1
 ;; Package-Requires: ((emacs "24.3"))
 ;; Keywords: lisp, tools
 ;; URL: https://github.com/k3jph/stops-el
