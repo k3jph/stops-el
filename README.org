@@ -6,7 +6,7 @@
 #+OPTIONS: toc:nil num:nil
 
 [[https://github.com/k3jph/stops-el][file:https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white]]
-[[https://jameshoward.us][file:https://img.shields.io/badge/homepage-jameshoward.us-0b2f5b.svg?style=for-the-badge&labelColor=f3dd78]]
+[[https://jameshoward.us][file:https://img.shields.io/badge/homepage-jameshoward.us-1a5bb0.svg?style=for-the-badge&labelColor=f3dd78]]
 
 [[https://xkcd.com/859][file:https://img.shields.io/badge/%28-%20%20%20-red.svg]]
 [[https://github.com/k3jph/stops-el/actions/workflows/build-main.yml][file:https://github.com/k3jph/stops-el/actions/workflows/build-main.yml/badge.svg?branch=main]]
