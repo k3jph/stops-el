@@ -1,6 +1,10 @@
 #+TITLE: Changelog
 #+OPTIONS: toc:nil num:nil
 
+* 1.0.2
+- Add MELPA-compatible AI assistance attribution to the package source and tests.
+- Update release metadata for the 1.0.2 hotfix.
+
 * 1.0.1
 - Add support for docs deployment to GitHub pages
 
