@@ -149,4 +149,4 @@ Stops is released under the MIT License. See ~LICENSE~ for details.
 
 * Version
 
-This is the 1.0.1 release for Stops.
+This is the 1.0.2 release for Stops.

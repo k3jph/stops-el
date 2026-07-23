@@ -1,5 +1,8 @@
 ;;; stops-test.el --- Tests for stops.el -*- lexical-binding: t; -*-
 
+;; Author: James P. Howard, II <jh@jameshoward.us>
+;; Assisted-by: ChatGPT:GPT-5.6-Thinking
+
 ;;; Commentary:
 
 ;; ERT tests for stops.el.
