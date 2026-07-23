@@ -5,7 +5,7 @@ CASK ?= cask
 BUILD_DIR := dist
 DOCS_BUILD_DIR := public
 PACKAGE := stops
-VERSION := 1.0.1
+VERSION := 1.0.2
 RC_TAG :=
 ARCHIVE := $(BUILD_DIR)/$(PACKAGE)-$(VERSION)$(RC_TAG).tar.gz
 
