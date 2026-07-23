@@ -4,8 +4,9 @@
 ;; SPDX-License-Identifier: MIT
 
 ;; Author: James P. Howard, II <jh@jameshoward.us>
+;; Assisted-by: ChatGPT:GPT-5.6-Thinking
 ;; Maintainer: James P. Howard, II <jh@jameshoward.us>
-;; Version: 1.0.1
+;; Version: 1.0.2
 ;; Package-Requires: ((emacs "24.3"))
 ;; Keywords: lisp, tools
 ;; URL: https://github.com/k3jph/stops-el
